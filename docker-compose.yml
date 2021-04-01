@@ -1,0 +1,84 @@
+version: '3'
+
+services:
+
+
+  es01:
+    build:
+      context: ./docker/elasticsearch
+    container_name: es01
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data01:/usr/share/elasticsearch/data
+    networks:
+      - es-net
+
+  es02:
+    build:
+      context: ./docker/elasticsearch
+    container_name: es02
+    environment:
+      - node.name=es02
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,ex03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data02:/usr/share/elasticsearch/data
+    networks:
+      - es-net
+
+  es03:
+    build:
+      context: ./docker/elasticsearch
+    container_name: es03
+    environment:
+      - node.name=es03
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,ex02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data03:/usr/share/elasticsearch/data
+    networks:
+      - es-net
+
+  es-head:
+    image: mobz/elasticsearch-head:5-alpine
+    container_name: es-head
+    ports:
+      - 9100:9100
+
+volumes:
+  es-data01:
+    driver: local
+  es-data02:
+    driver: local
+  es-data03:
+    driver: local
+
+networks:
+  es-net:
