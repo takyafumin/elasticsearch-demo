@@ -79,6 +79,8 @@ services:
       - 3306:3306
     volumes:
       - db-data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./resources/mysql:/tmp/resources
     networks:
       - es-net
     environment:
@@ -87,7 +89,7 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - TZ=${TZ}
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --local-infile=1
 
   adminer:
     image: adminer:latest
@@ -101,6 +103,13 @@ services:
     build:
       context: ./docker/logstash
     container_name: es-logstash
+    volumes:
+      - ./resources/logstash/conf:/tmp/conf
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - TZ=${TZ}
 
 
 volumes:

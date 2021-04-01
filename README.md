@@ -32,6 +32,9 @@ git clone [リポジトリ]
 # プロジェクトディレクトリ内で docker-compose 起動
 cd elasticsearch-head
 docker-compose up -d
+
+# 初期データ登録
+bash ./setup.sh
 ```
 
 

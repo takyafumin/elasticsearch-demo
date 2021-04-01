@@ -1,0 +1,5 @@
+1	テスト ユーザ1	test-user1@localhost.local	test-password1	テストデータ1,りんごが好き	2021/04/01 00:00:00	2021/04/01 00:00:00
+2	テスト ユーザ2	test-user2@localhost.local	test-password2	テストデータ2,みかんが好き	2021/04/01 00:00:00	2021/04/01 00:00:00
+3	テスト ユーザ3	test-user3@localhost.local	test-password3	テストデータ3,りんごとみかんが好き	2021/04/01 00:00:00	2021/04/01 00:00:00
+4	テスト ユーザ4	test-user4@localhost.local	test-password4	テストデータ4,ばななが好き	2021/04/01 00:00:00	2021/04/01 00:00:00
+5	テスト ユーザ5	test-user5@localhost.local	test-password5	テストデータ5,みかんが好き	2021/04/01 00:00:00	2021/04/01 00:00:00
