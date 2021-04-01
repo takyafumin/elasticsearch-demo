@@ -18,6 +18,8 @@ elasticsearch head plugin を試す
 | es02    | elasticsearch node2 |
 | es03    | elasticsearch node3 |
 | es-head | elasticsearch head  |
+| db      | Database            |
+| adminer | Database WebGUI     |
 
 
 使い方
