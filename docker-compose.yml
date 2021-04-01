@@ -66,8 +66,14 @@ services:
     networks:
       - es-net
 
+        #es-head:
+        #  image: mobz/elasticsearch-head:latest
+        #  container_name: es-head
+        #  ports:
+        #    - 9100:9100
   es-head:
-    image: mobz/elasticsearch-head:latest
+    build:
+      context: ./docker/elasticsearch-head
     container_name: es-head
     ports:
       - 9100:9100
