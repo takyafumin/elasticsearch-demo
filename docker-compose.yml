@@ -97,6 +97,11 @@ services:
     networks:
       - es-net
 
+  es-logstash:
+    build:
+      context: ./docker/logstash
+    container_name: es-logstash
+
 
 volumes:
   es-data01:
