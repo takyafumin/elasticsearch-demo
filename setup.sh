@@ -10,3 +10,7 @@ sleep 5
 # setup database
 docker-compose exec db bash /tmp/resources/setup.sh
 
+
+# mysql -> (logstash) -> elasticsearch
+docker-compose run es-logstash logstash -f /tmp/conf/user.conf
+

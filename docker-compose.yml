@@ -67,7 +67,7 @@ services:
       - es-net
 
   es-head:
-    image: mobz/elasticsearch-head:5-alpine
+    image: mobz/elasticsearch-head:latest
     container_name: es-head
     ports:
       - 9100:9100
@@ -105,11 +105,14 @@ services:
     container_name: es-logstash
     volumes:
       - ./resources/logstash/conf:/tmp/conf
+      - ./resources/logstash/pipeline:/usr/share/logstash/pipeline
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - TZ=${TZ}
+    networks:
+      - es-net
 
 
 volumes:
