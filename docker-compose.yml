@@ -79,13 +79,13 @@ services:
       - 9100:9100
 
   db:
-    image: mysql:8
+    build:
+      context: ./docker/mysql
     container_name: db
     ports:
       - 3306:3306
     volumes:
       - db-data:/var/lib/mysql
-      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./resources/mysql:/tmp/resources
     networks:
       - es-net
