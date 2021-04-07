@@ -1,7 +1,20 @@
 version: '3'
 
-services:
+volumes:
+  es-data01:
+    driver: local
+  es-data02:
+    driver: local
+  es-data03:
+    driver: local
+  db-data:
+    driver: local
 
+networks:
+  es-net:
+
+
+services:
 
   es01:
     build:
@@ -66,11 +79,6 @@ services:
     networks:
       - es-net
 
-        #es-head:
-        #  image: mobz/elasticsearch-head:latest
-        #  container_name: es-head
-        #  ports:
-        #    - 9100:9100
   es-head:
     build:
       context: ./docker/elasticsearch-head
@@ -87,6 +95,7 @@ services:
     volumes:
       - db-data:/var/lib/mysql
       - ./resources/mysql:/tmp/resources
+      - ./mysql/init:/docker-entrypoint-initdb.d
     networks:
       - es-net
     environment:
@@ -94,8 +103,36 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - TZ=${TZ}
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --local-infile=1
+
+  es-logstash:
+    build:
+      context: ./docker/logstash
+    container_name: es-logstash
+    volumes:
+      #- ./resources/logstash/conf:/tmp/conf
+      #- ./resources/logstash/pipeline:/usr/share/logstash/pipeline
+      - ./coordination/pipeline:/usr/share/logstash/pipeline
+      - ./coordination/persisted:/usr/share/logstash/persisted
+      - ./coordination/template:/usr/share/logstash/template
+      - ./coordination/sql:/usr/share/logstash/sql
+      - ./coordination/mysql-connector-java-8.0.21.jar:/usr/share/logstash/mysql-connector-java-8.0.21.jar
+    networks:
+      - es-net
+    environment:
+      #- MYSQL_DATABASE=${MYSQL_DATABASE}
+      #- MYSQL_USER=${MYSQL_USER}
+      #- MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      #- TZ=${TZ}
+      - CLEAN_RUN=true
+      - RDS_READ_ENDPOINT=jdbc:mysql://db:3306/
+      - RDS_DBNAME=${MYSQL_DATABASE}
+      - RDS_DBUSER=${MYSQL_USER}
+      - RDS_PASSWORD=${MYSQL_PASSWORD}
+      - ES_ENDPOINT=http://es01:9200
+      - ES_INDEX=user
 
   adminer:
     image: adminer:latest
@@ -104,32 +141,3 @@ services:
       - 8080:8080
     networks:
       - es-net
-
-  es-logstash:
-    build:
-      context: ./docker/logstash
-    container_name: es-logstash
-    volumes:
-      - ./resources/logstash/conf:/tmp/conf
-      - ./resources/logstash/pipeline:/usr/share/logstash/pipeline
-    environment:
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - TZ=${TZ}
-    networks:
-      - es-net
-
-
-volumes:
-  es-data01:
-    driver: local
-  es-data02:
-    driver: local
-  es-data03:
-    driver: local
-  db-data:
-    driver: local
-
-networks:
-  es-net:

@@ -1,0 +1,13 @@
+path.data: /usr/share/logstash/queue/data
+queue.type: persisted
+path.logs: /var/log/logstash
+queue.max_bytes: 1024mb
+queue.checkpoint.writes: 8192
+queue.page_capacity: 64mb
+queue.max_events: 0
+log.level: info
+log.format: json
+slowlog.threshold.warn: 1s
+slowlog.threshold.info: 100ms
+slowlog.threshold.debug: 100ms
+slowlog.threshold.trace: 100ms

@@ -1,0 +1,8 @@
+- pipeline.id: rds-es
+  path.config: "/usr/share/logstash/pipeline/pipeline.conf"
+  pipeline.workers: 1
+  pipeline.batch.size: 1024
+- pipeline.id: json-rds-es
+  path.config: "/usr/share/logstash/pipeline/nested_data_pipeline.conf"
+  pipeline.workers: 1
+  pipeline.batch.size: 1024

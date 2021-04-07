@@ -1,0 +1,47 @@
+{
+  "index_patterns": [
+    "user"
+  ],
+  "settings": {
+    "number_of_shards": 1
+  },
+  "mappings": {
+    "properties": {
+      "user_id": {
+        "type": "long"
+      },
+      "name": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "gender_cd": {
+        "type": "keyword"
+      },
+      "birth_date": {
+        "type": "date"
+      },
+      "school": {
+        "type": "nested",
+        "properties": {
+          "school_name": {
+            "type": "text"
+          },
+          "school_type": {
+            "type": "keyword"
+          },
+          "graduation_year": {
+            "type": "date"
+          },
+          "drop_flg": {
+            "type": "long"
+          }
+        }
+      }
+    }
+  },
+  "version": 1
+}
